@@ -1,0 +1,67 @@
+<html>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		img {
+			margin-left: 50%;
+			transform: translateX(-50%);
+		}
+	</style>
+	<div id="content" width="100%" height="100%" style="overflow: hidden;">
+		{{ADMIN_CONTROLS}}
+		<img id="img" draggable="false"/>
+	</div>
+	<script>
+		let id = "{{PAGE_ID}}";
+
+		const client = new WebSocket('{{HOST}}');
+		const img = document.getElementById("img");
+		const content = document.getElementById("content");
+		const text = document.getElementById("text");
+		const submit = document.getElementById("submit");
+
+		client.onopen = function(e) {
+			client.send(JSON.stringify({id:id,t:"init",w:window.innerWidth,h:window.innerHeight}));
+		};
+
+		client.onmessage = function(e) {
+			let s = new String(e.data);
+			let obj = JSON.parse(s.toString());
+			if (obj.t === "title") {
+				document.title = obj.title;
+			} else if (obj.t === "redirect") {
+				window.location.replace(obj.to);
+			} else if (obj.t === "ss") {
+				let b64 = obj.data;
+
+				// https://stackoverflow.com/a/16245768
+				const byteCharacters = atob(b64);
+				const byteNumbers = new Array(byteCharacters.length);
+				for (let i = 0; i < byteCharacters.length; i++) {
+					byteNumbers[i] = byteCharacters.charCodeAt(i);
+				}
+				const byteArray = new Uint8Array(byteNumbers);
+				const blob = new Blob([byteArray], {type: "image/jpeg"});
+				const ssUrl = window.URL.createObjectURL(blob);
+				img.src = ssUrl;
+			}
+		};
+
+		img.onclick = function(e) {
+			client.send(JSON.stringify({id:id,t:"click",x:e.offsetX,y:e.offsetY}));
+		};
+
+		if (submit !== undefined && submit !== null) {
+			submit.onclick = function(e) {
+				client.send(JSON.stringify({id:id,t:"nav",url:text.value}));
+			}
+		}
+
+		document.addEventListener('keydown', function(e) {
+			client.send(JSON.stringify({id:id,t:"type",k:e.key}));
+			e.preventDefault() // particularly needed for tab but interferes with i.e. ctrl-R to refresh
+		})
+	</script>
+</html>
