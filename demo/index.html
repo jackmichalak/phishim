@@ -1,0 +1,23 @@
+<html>
+
+<head>
+    <script>
+        function submit() {
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+
+            if (username.value === "username" && password.value === "password") {
+                window.location.assign("http://localhost:3000/success")
+            } else {
+                window.location.assign("http://localhost:3000/failed")
+            }
+        }
+    </script>
+</head>
+<div>
+    Username: <input type="text" id="username" /><br />
+    Password: <input type="password" id="password" /><br />
+    <input type="submit" id="submit" onclick="submit()" />
+</div>
+
+</html>

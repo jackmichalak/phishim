@@ -7,10 +7,10 @@ const HOSTNAME = "ws://localhost:8080";
 const PORT = 8080;
 const ADMIN_PORT = 3333;
 const SCREENSHOT_DELAY_TARGET = 150;
-const URL_BASE = 'https://<startpagetargetdomain>';
+const URL_BASE = 'http://localhost:3000';
 const START_PATH = '/login';
-const SUCCESS_URL = "<loggedinurlsuffix>/"; // TODO: Make regex
-const REDIRECT_TO = 'https://<redirectdomain>/';
+const SUCCESS_URL = "success"; // TODO: Make regex
+const REDIRECT_TO = 'http://localhost:3000/content';
 const FREE_PAGE_POOL_SIZE = 3;
 const LOG_FILE = "logs.txt";
 
@@ -163,10 +163,12 @@ wsServer.on('connection', socket => {
             log("Was success, redirecting to actual endpoint page " + pageId)
             socket.send(JSON.stringify({ t: "redirect", to: REDIRECT_TO }));
             page.off('response', successChecker);
+            page.off('load', successChecker);
             archivePage(pageId);
           }
         };
         page.on('response', successChecker);
+        page.on('load', successChecker)
         log("Grabbed free page for pageId " + pageId);
       }
       if (page === undefined) {
