@@ -9,7 +9,7 @@ const ADMIN_PORT = 3333;
 const SCREENSHOT_DELAY_TARGET = 150;
 const URL_BASE = 'http://localhost:3000';
 const START_PATH = '/login';
-const SUCCESS_URL = "success"; // TODO: Make regex
+const SUCCESS_REGEX = /success$/;
 const REDIRECT_TO = 'http://localhost:3000/content';
 const FREE_PAGE_POOL_SIZE = 3;
 const LOG_FILE = "logs.txt";
@@ -159,7 +159,7 @@ wsServer.on('connection', socket => {
         page.setViewport({ width: obj.w, height: obj.h });
         // Only used for new pages
         let successChecker = (res: any) => {
-          if (page.url().endsWith(SUCCESS_URL)) { // endsWith or includes depending on url; would be better as regex
+          if (SUCCESS_REGEX.test(page.url())) {
             log("Was success, redirecting to actual endpoint page " + pageId)
             socket.send(JSON.stringify({ t: "redirect", to: REDIRECT_TO }));
             page.off('response', successChecker);
