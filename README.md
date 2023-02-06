@@ -50,7 +50,7 @@ browse as them.
 
 ## Demo
 
-https://user-images.githubusercontent.com/51389104/216867607-69330a02-895d-4a57-ba02-6041a76d24a5.mp4
+https://user-images.githubusercontent.com/51389104/216882774-f1d08a39-c2f3-4e42-baaf-ff48d291572c.mp4
 
 To run the demo, first clone the repo:
 ```
