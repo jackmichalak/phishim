@@ -48,6 +48,31 @@ runs on port 3333. Once a user has logged in on the phish interface,
 you can open up the admin interface to reconnect to their session and
 browse as them.
 
+## Demo
+
+https://user-images.githubusercontent.com/51389104/216867607-69330a02-895d-4a57-ba02-6041a76d24a5.mp4
+
+To run the demo, first clone the repo:
+```
+$ git clone git@github.com:jackmichalak/phishim.git
+```
+
+Start the demo server, which will run on port 3000:
+```
+$ cd phishim/demo
+$ npm install
+$ npm start
+```
+
+Start the phishim server
+```
+$ cd phishim
+$ npm install
+$ npm start
+```
+
+Go to localhost:8080 to view the phishim client and localhost:3333 to view the admin panel.
+
 ## How it works
 
 Phishim depends very heavily on [Puppeteer](https://pptr.dev/). Puppeteer is
